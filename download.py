@@ -21,15 +21,10 @@ sys.setdefaultencoding('utf-8')
 import requests
 #from WindPy import *
 
-workdir='d:\\\\python\\'
+workdir='./data/'
 stock_bad_tick_day='stock_bad_tick_day.txt'
 #w.start(waitTime=30)
 
-f=open('username_and_password_for_wireless_pku.txt')
-a=f.readlines()
-username_pku=a[0]
-password_pku=a[1]
-f.close()
 
 class onestock:
 
@@ -165,28 +160,7 @@ def generate_sql_command(table,typeofdata):
     insert_table_commmand='INSERT INTO '+typeofdata+columnchar2
     return creat_table_command, insert_table_commmand
 
-def repaire_wireless_pku(username=username_pku,password=password_pku):
-    print 'the network runinto a problem'
-    print 'i am repairing the wireless_pku'
 
-    url='http://its.pku.edu.cn/cas/login'
-    data_login={'username1':username,
-                'password':password,
-                'fwrd':'free',
-                'username':username+'|;kiDrqvfi7d$v0p5Fg72Vwbv2;|'+password+'|;kiDrqvfi7d$v0p5Fg72Vwbv2;|12'
-                }
-    data_logout={'username1':username,
-                 'password':password,
-                 'pwd_t':'密码',
-                 'fwrd':'free',
-                 'username':username+'|;kiDrqvfi7d$v0p5Fg72Vwbv2;|'+password+'|;kiDrqvfi7d$v0p5Fg72Vwbv2;|13'
-                 }
-    s=requests.session()
-    response=s.post(url,data=data_logout)
-    response=s.get('http://its.pku.edu.cn/netportal/PKUIPGW?cmd=close&type=allconn&fr=0&sid=224')
-    time.sleep(0.1)
-    response=s.post(url,data=data_login)
-    response=s.get('http://its.pku.edu.cn/netportal/PKUIPGW?cmd=open&type=free&fr=0&sid=362')
 
 
 
@@ -238,7 +212,7 @@ def delete_bad_stock():
 
 
 def realtime_write():
-    con=sql.connect(workdir+'concept.db')
+    con=sql.connect(workdir+'concept1.db')
     concept_all_stock=sql2.read_sql('select * from concept',con)
     con.close()
 
@@ -328,11 +302,11 @@ def concept_read():
         print n,len(real_data.index),time2-time1
         #print real_data.head(5)
 
-#download_all_date(if_check_before=1)
+download_all_date(if_check_before=1)
 #delete_bad_stock()
 
 #time1=time.clock()
-realtime_write()
+#realtime_write()
 #concept_read()
 #time2=time.clock()
 #time2-time1
